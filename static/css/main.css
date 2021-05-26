@@ -1,0 +1,19 @@
+html,
+body {
+	font-family: sans-serif;
+}
+
+input,
+button,
+textarea {
+	font-size: 1em;
+}
+
+textarea {
+	height: 600px;
+	width: 700px;
+}
+
+.replOutput code {
+	white-space: pre-wrap;
+}
