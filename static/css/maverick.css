@@ -1,0 +1,67 @@
+.cm-s-maverick.CodeMirror {
+    background: var(--primary-bg);
+    color: var(--primary-text);
+    line-height: 1.5em;
+}
+.cm-s-maverick div.CodeMirror-selected {
+    background: var(--active-bg);
+}
+.cm-s-maverick .CodeMirror-line::selection,
+.cm-s-maverick .CodeMirror-line > span::selection,
+.cm-s-maverick .CodeMirror-line > span > span::selection {
+    background: var(--active-bg);
+}
+.cm-s-maverick .CodeMirror-line::-moz-selection,
+.cm-s-maverick .CodeMirror-line > span::-moz-selection,
+.cm-s-maverick .CodeMirror-line > span > span::-moz-selection {
+    background: var(--active-bg);
+}
+.cm-s-maverick .CodeMirror-gutters {
+    background: var(--hover-bg);
+    border-right: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.cm-s-maverick .CodeMirror-guttermarker {
+    color: var(--secondary-text);
+}
+.cm-s-maverick .CodeMirror-guttermarker-subtle {
+    color: var(--secondary-text);
+}
+.cm-s-maverick .CodeMirror-linenumber {
+    color: var(--secondary-text);
+}
+.cm-s-maverick .CodeMirror-cursor {
+    border-left: 1px solid var(--primary-text);
+}
+
+.cm-s-maverick span.cm-comment { color: var(--secondary-text); }
+.cm-s-maverick span.cm-atom { color: var(--primary-text); }
+.cm-s-maverick span.cm-number { color: var(--primary-text); }
+
+.cm-s-maverick span.cm-comment.cm-attribute { color: var(--primary-text); }
+.cm-s-maverick span.cm-comment.cm-def { color: var(--primary-text); }
+.cm-s-maverick span.cm-comment.cm-tag { color: var(--primary-text); }
+.cm-s-maverick span.cm-comment.cm-type { color: var(--primary-text); }
+
+.cm-s-maverick span.cm-property, .cm-s-maverick span.cm-attribute { color: var(--primary-text); }
+.cm-s-maverick span.cm-keyword { color: var(--primary-text); }
+.cm-s-maverick span.cm-builtin { color: var(--primary-text); }
+.cm-s-maverick span.cm-string { color: var(--primary-text); }
+
+.cm-s-maverick span.cm-variable { color: var(--primary-text); }
+.cm-s-maverick span.cm-variable-2 { color: var(--primary-text); }
+.cm-s-maverick span.cm-variable-3,
+.cm-s-maverick span.cm-type { color: var(--primary-text); }
+.cm-s-maverick span.cm-def { color: var(--primary-text); }
+.cm-s-maverick span.cm-bracket { color: var(--primary-text); }
+.cm-s-maverick span.cm-tag { color: var(--primary-text); }
+.cm-s-maverick span.cm-header { color: var(--primary-text); }
+.cm-s-maverick span.cm-link { color: var(--primary-text); }
+.cm-s-maverick span.cm-error { background: var(--secondary-text); color: var(--primary-bg); }
+
+.cm-s-maverick .CodeMirror-activeline-background { background: var(--hover-bg); }
+.cm-s-maverick .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: var(--primary-bg) !important;
+}

@@ -23,6 +23,8 @@ build-september:
 # build app client
 build:
 	cat static/js/ink.js \
+		static/js/codemirror.js \
+		static/js/closebrackets.js \
 		static/js/torus.min.js \
 		> static/ink/vendor.js
 	september translate \

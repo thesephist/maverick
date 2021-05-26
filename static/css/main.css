@@ -1,19 +1,222 @@
 html,
 body {
-	font-family: sans-serif;
+    margin: 0;
 }
 
+body {
+    color: var(--primary-text);
+    background: var(--primary-bg);
+    font-family: var(--sans);
+
+    --sans: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+
+    /* color variables taken from Merlot */
+    --primary-bg: #f9fafb;
+    --primary-text: #111111;
+    --secondary-bg: #f3f4f6;
+    --secondary-text: #9b9b9b;
+    --hover-bg: #eaebec;
+    --active-bg: #dcdfe4;
+    --translucent: rgba(249, 250, 251, .8);
+    --transparent: rgba(249, 250, 251, 0);
+}
+
+body.dark {
+    --primary-bg: #2f3437;
+    --primary-text: #ebebeb;
+    --secondary-bg: #373c3f;
+    --secondary-text: #a4a7a9;
+    --hover-bg: #474c50;
+    --active-bg: #626569;
+    --translucent: rgba(47, 52, 55, .8);
+    --transparent: rgba(47, 52, 55, 0);
+}
+
+a {
+    color: var(--primary-text);
+}
+
+button {
+    font-size: 1em;
+}
+
+pre,
+code,
 input,
-button,
 textarea {
-	font-size: 1em;
+    color: var(--primary-text);
+    font-size: 1em;
+    font-family: var(--mono);
 }
 
-textarea {
-	height: 600px;
-	width: 700px;
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
 }
 
-.replOutput code {
-	white-space: pre-wrap;
+header {
+    height: 50px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 10px;
+    background: var(--secondary-bg);
+    border-bottom: 2px solid var(--active-bg);
 }
+
+header,
+header nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+nav a {
+    margin: 0 8px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.left-nav {
+    justify-content: flex-start;
+}
+
+.right-nav {
+    justify-content: flex-end;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: space-between;
+}
+
+.editor,
+.repl {
+    position: relative;
+    height: 100%;
+    width: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.editor + .repl {
+    border-left: 2px solid var(--active-bg);
+}
+
+.editorContainer {
+    height: 100%;
+    width: 100%;
+}
+
+.editorContainer .CodeMirror {
+    height: 100%;
+    font-family: var(--mono);
+}
+
+.editor .runButton {
+    padding: 8px 12px;
+    border-radius: 4px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    color: var(--primary-bg);
+    background: var(--primary-text);
+    border: 0;
+    transition: transform .2s;
+    z-index: 100;
+}
+
+.editor .runButton:hover {
+    background: var(--secondary-text);
+}
+
+.repl {
+    overflow-x: hidden;
+}
+
+.replTerm {
+    line-height: 1.5em;
+}
+
+.replTerm code {
+    white-space: pre-wrap;
+    display: block;
+    box-sizing: border-box;
+    padding: 0 8px;
+}
+
+.repl .prog-line {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.repl .prog-line:hover {
+    background: var(--hover-bg);
+}
+
+.repl .result-line {
+    font-style: italic;
+    color: var(--secondary-text);
+}
+
+.inputLine {
+    display: flex;
+    flex-direction: row;
+    font-family: var(--mono);
+    background: var(--hover-bg);
+    padding: 0 8px;
+}
+
+.inputPrompt {
+    white-space: pre;
+    font-weight: bold;
+}
+
+textarea.replLine {
+    font-size: 1em;
+    height: 1.5em; /* match line-height */
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+    font-family: var(--mono);
+    line-height: inherit;
+    resize: none;
+}
+
+textarea.replLine::placeholder {
+    font-style: italic;
+    color: var(--secondary-text);
+}
+
+@media only screen and (max-width: 700px) {
+    .workspace {
+        flex-direction: column;
+    }
+    .editor,
+    .repl {
+        height: 0;
+        width: 100%;
+    }
+    .editor + .repl {
+        border-top: 2px solid var(--active-bg);
+        border-left: 0;
+    }
+}
+
