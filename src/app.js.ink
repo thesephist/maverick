@@ -371,6 +371,9 @@ AboutPage := () => h('div', ['aboutPage'], [
 			` TODO:
 			- which stdlib is available
 			- the fact that this uses eval() currently so is unstable
+				- e.g. local variables are not cleared when repl is cleared; a
+				  single browser session is a single long REPL session, and the
+				  session is self-mutable.
 			- why it uses September and why it's cool
 			- where to find more documentation on Maverick `
 			'The Ink playground is a web based IDE and REPL for the '
@@ -388,10 +391,20 @@ update := r.update
 
 State := {
 	` editor content `
-	file: restored := getItem('State.file') :: {
-		() -> Examples.'Hello World'
-		_ -> restored
-	}
+	file: (
+		` set State.file from URL query /?code=_ if present `
+		params := jsnew(URLSearchParams, [location.search])
+		codeParam := bind(params, 'get')('code') :: {
+			() -> restored := getItem('State.file') :: {
+				() -> Examples.'Hello World'
+				_ -> restored
+			}
+			_ -> (
+				bind(history, 'replaceState')((), (), '/')
+				codeParam
+			)
+		}
+	)
 	` currently editing line in repl `
 	line: ''
 	` other lines in the repl `
