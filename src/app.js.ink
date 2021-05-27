@@ -10,6 +10,11 @@ Line := {
 	Error: 3
 }
 
+Page := {
+	Home: 'home'
+	About: 'about'
+}
+
 Embedded? := ~(window.frameElement = ())
 
 ` utility fns `
@@ -105,10 +110,32 @@ RunButton := () => hae('button', ['runButton'], {title: 'Run code (Ctrl + Enter)
 
 Header := () => h('header', [], [
 	h('nav', ['left-nav'], [
-		ha('a', [], {href: '/'}, [
-			h('strong', [], ['Ink', h('span', ['desktop'], [' playground'])])
-		])
-		Link('about', 'https://github.com/thesephist/maverick')
+		hae(
+			'a', [], {href: '/'}
+			{
+				click: evt => (
+					bind(evt, 'preventDefault')()
+					render(State.page := Page.Home)
+					focusReplLine()
+				)
+			}
+			[
+				h('strong', [], ['Ink', h('span', ['desktop'], [' playground'])])
+			]
+		)
+		hae(
+			'a', [], {href: 'https://github.com/thesephist/maverick'}
+			{
+				click: evt => (
+					bind(evt, 'preventDefault')()
+					render(State.page := (State.page :: {
+						Page.Home -> Page.About
+						Page.About -> Page.Home
+					}))
+				)
+			}
+			['about']
+		)
 	])
 	h('nav', ['right-nav'], [
 		hae(
@@ -280,7 +307,19 @@ Credits := () => h('div', ['credits'], [
 	Link('September', 'https://github.com/thesephist/september')
 ])
 
-` main render loop `
+AboutPage := () => h('div', ['aboutPage'], [
+	h('h1', [], ['About Ink playground'])
+	h('p', [], [
+		` TODO:
+		- which stdlib is available
+		- the fact that this uses eval() currently so is unstable
+		- why it uses September and why it's cool
+		- where to find more documentation on Maverick `
+		'some explanation'
+	])
+])
+
+` application setup `
 
 root := bind(document, 'querySelector')('#root')
 r := Renderer(root)
@@ -300,6 +339,7 @@ State := {
 	exampleName: ''
 
 	theme: 'light'
+	page: Page.Home
 }
 
 ` state fns `
@@ -326,15 +366,19 @@ scrollToReplEnd := () => inputLine := bind(document, 'querySelector')('.replInpu
 persistFileImmediately := () => setItem('State.file', State.file)
 persistFile := delay(persistFileImmediately, 800)
 
+` main render loop `
 render := () => update(h('div', ['app'], [
 	Embedded? :: {
 		true -> ()
 		_ -> Header()
 	}
-	h('div', ['workspace'], [
-		Editor()
-		Repl()
-	])
+	State.page :: {
+		Page.Home -> h('div', ['workspace'], [
+			Editor()
+			Repl()
+		])
+		Page.About -> AboutPage()
+	}
 	Credits()
 ]))
 
