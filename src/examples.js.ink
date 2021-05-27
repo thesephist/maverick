@@ -29,7 +29,6 @@ fibMemo := n => (
 	memo.(n)
 )
 
-log(\'fib(20) is 6765:\')
 out(\'Naive solution: \'), log(fib(20))
 out(\'Dynamic solution: \'), log(fibMemo(20))'
 	'Prime sieve': '` Ink prime sieve `

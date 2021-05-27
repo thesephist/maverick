@@ -51,9 +51,21 @@ evaluateInk := prog => (
 	index(compiled, 'parse err @') :: {
 		~1 -> (
 			out := s => (
-				State.replLines.len(State.replLines) := {
-					type: Line.Log
-					text: s
+				` if last line is also an output, append to it. Otherwise, add
+				new entry to replLines. `
+				lastLine := State.replLines.(len(State.replLines) - 1) :: {
+					{type: Line.Log, text: _} -> (
+						State.replLines.(len(State.replLines) - 1) := {
+							type: Line.Log
+							text: lastLine.text + s
+						}
+					)
+					_ -> (
+						State.replLines.len(State.replLines) := {
+							type: Line.Log
+							text: s
+						}
+					)
 				}
 				render()
 				()
@@ -277,13 +289,17 @@ update := r.update
 State := {
 	` editor content `
 	file: restored := getItem('State.file') :: {
-		() -> Examples.Hello
+		() -> Examples.'Hello World'
 		_ -> restored
 	}
+	` currently editing line in repl `
 	line: ''
+	` other lines in the repl `
 	replLines: []
-	theme: 'light'
+	` currently selected example name `
 	exampleName: ''
+
+	theme: 'light'
 }
 
 ` state fns `
