@@ -20,6 +20,9 @@ body {
     --active-bg: #dcdfe4;
     --translucent: rgba(249, 250, 251, .8);
     --transparent: rgba(249, 250, 251, 0);
+
+	/* repl text colors */
+	--error: #da1111;
 }
 
 body.dark {
@@ -31,6 +34,8 @@ body.dark {
     --active-bg: #626569;
     --translucent: rgba(47, 52, 55, .8);
     --transparent: rgba(47, 52, 55, 0);
+
+	--error: #ff554c;
 }
 
 a {
@@ -55,6 +60,7 @@ textarea {
     flex-direction: column;
     width: 100%;
     height: 100vh;
+	overflow: hidden;
 }
 
 header {
@@ -101,6 +107,8 @@ nav a {
     flex-grow: 1;
     flex-shrink: 1;
     justify-content: space-between;
+	height: 0;
+	width: 100%;
 }
 
 .editor,
@@ -136,7 +144,7 @@ nav a {
     color: var(--primary-bg);
     background: var(--primary-text);
     border: 0;
-    transition: transform .2s;
+    transition: background-color .15s;
     z-index: 100;
 }
 
@@ -157,6 +165,7 @@ nav a {
     display: block;
     box-sizing: border-box;
     padding: 0 8px;
+	word-break: break-all;
 }
 
 .repl .prog-line {
@@ -173,12 +182,19 @@ nav a {
     color: var(--secondary-text);
 }
 
+.repl .error-line {
+	color: var(--error);
+    font-style: italic;
+}
+
 .inputLine {
     display: flex;
     flex-direction: row;
     font-family: var(--mono);
     background: var(--hover-bg);
     padding: 0 8px;
+	/* to not overlap with credits, ergonomics */
+	margin-bottom: 6em;
 }
 
 .inputPrompt {
@@ -186,7 +202,25 @@ nav a {
     font-weight: bold;
 }
 
-textarea.replLine {
+.addToEditorButton {
+	display: none;
+	float: right;
+	background: transparent;
+    border: 0;
+    color: var(--secondary-text);
+    font-family: var(--mono);
+    cursor: pointer;
+}
+
+.replLine:hover .addToEditorButton {
+	display: inline;
+}
+
+.addToEditorButton:hover {
+    text-decoration: underline;
+}
+
+textarea.replInputLine {
     font-size: 1em;
     height: 1.5em; /* match line-height */
     padding: 0;
@@ -196,13 +230,25 @@ textarea.replLine {
     outline: none;
     flex-grow: 1;
     font-family: var(--mono);
-    line-height: inherit;
+    line-height: 1.5em;
     resize: none;
 }
 
-textarea.replLine::placeholder {
+textarea.replInputLine::placeholder {
     font-style: italic;
     color: var(--secondary-text);
+}
+
+.credits {
+	position: fixed;
+	right: 6px;
+	bottom: 6px;
+	font-size: 12px;
+}
+
+.credits,
+.credits a {
+	color: var(--secondary-text);
 }
 
 @media only screen and (max-width: 700px) {

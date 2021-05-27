@@ -7,6 +7,7 @@ Line := {
 	Prog: 0
 	Result: 1
 	Log: 2
+	Error: 3
 }
 
 Embedded? := ~(window.frameElement = ())
@@ -37,10 +38,10 @@ documentational reference to the source file. `
 translateInkToJS := load('september/ink/translate').main
 
 ` takes a program and synchronously returns the evaluation result as a string `
-getEvalOutput := prog => (
+evaluateInk := prog => (
 	compiled := translateInkToJS(prog)
 	` semi-reliable error handling based on September behavior `
-	index(compiled, 'err @') :: {
+	index(compiled, 'parse err @') :: {
 		~1 -> (
 			out := s => (
 				State.replLines.len(State.replLines) := {
@@ -54,15 +55,16 @@ getEvalOutput := prog => (
 
 			` eval() only works with proper strings `
 			replOutput := string(eval(str(compiled)))
-			bind(console, 'log')(replOutput)
 			State.replLines.len(State.replLines) := {
 				type: Line.Result
 				text: replOutput
 			}
 			replOutput
 		)
-		` TODO: find a better way to propagate error messages `
-		_ -> compiled
+		_ -> State.replLines.len(State.replLines) := {
+			type: Line.Error
+			text: compiled
+		}
 	}
 )
 
@@ -79,11 +81,13 @@ RunButton := () => hae('button', ['runButton'], {title: 'Run code (Ctrl + Enter)
 
 Header := () => h('header', [], [
 	h('nav', ['left-nav'], [
-		ha('a', [], {href: '/'}, 'Ink playground')
+		ha('a', [], {href: '/'}, [
+			h('strong', [], ['Ink playground'])
+		])
 	])
 	h('nav', ['right-nav'], [
+		Link('Ink docs', 'https://dotink.co')
 		Link('GitHub', 'https://github.com/thesephist/maverick')
-		Link('About Ink', 'https://dotink.co')
 	])
 ])
 
@@ -135,6 +139,13 @@ Editor := (
 	)
 )
 
+AddToEditorButton := prog => hae('button', ['addToEditorButton'], {}, {
+	click: evt => (
+		bind(evt, 'stopPropagation')()
+		render(State.file := State.file + Newline + prog + Newline)
+	)
+}, 'edit')
+
 Repl := () => hae(
 	'div'
 	['repl']
@@ -151,9 +162,10 @@ Repl := () => hae(
 							render(State.line := line.text)
 							focusReplLine()
 						)
-					}, ['> ', line.text])
+					}, ['> ', line.text, AddToEditorButton(line.text)])
 					Line.Result -> h('code', ['result-line'], [line.text])
 					Line.Log -> h('code', ['log-line'], [line.text])
+					Line.Error -> h('code', ['error-line'], [line.text])
 				}
 			])
 		)))
@@ -161,14 +173,23 @@ Repl := () => hae(
 			h('div', ['inputPrompt'], ['> '])
 			hae(
 				'textarea'
-				['replLine']
+				['replInputLine']
 				{
 					value: State.line
 					autofocus: ~Embedded?
-					placeholder: 'Type an expression to run, e.g. 1 + 2'
+					placeholder: 'Type an expression to run'
 				}
 				{
-					input: evt => render(State.line := evt.target.value)
+					input: evt => (
+						render(State.line := evt.target.value)
+						inputEl := evt.target
+
+						inputEl.style.height := 0
+						normHeight := inputEl.scrollHeight :: {
+							bind(inputEl, 'getBoundingClientRect')().height -> ()
+							_ -> inputEl.style.height := string(normHeight) + 'px'
+						}
+					)
 					keydown: evt => evt.key :: {
 						'Enter' -> (
 							bind(evt, 'preventDefault')()
@@ -181,8 +202,9 @@ Repl := () => hae(
 											type: Line.Prog
 											text: State.line
 										}
-										evalOutput := getEvalOutput(State.line)
+										evaluateInk(State.line)
 										render(State.line := '')
+										scrollToReplEnd()
 									)
 								}
 							}
@@ -197,6 +219,15 @@ Repl := () => hae(
 		])
 	]
 )
+
+Credits := () => h('div', ['credits'], [
+	'Ink playground is a project by '
+	Link('Linus', 'https://thesephist.com/')
+	' built with '
+	Link('Ink', 'https://dotink.co/')
+	' and '
+	Link('September', 'https://github.com/thesephist/september')
+])
 
 ` main render loop `
 
@@ -219,16 +250,22 @@ State := {
 
 clearRepl := () => render(State.replLines := [])
 
-focusReplLine := () => replLine := bind(document, 'querySelector')('textarea.replLine') :: {
+focusReplLine := () => replLine := bind(document, 'querySelector')('.replInputLine') :: {
 	() -> ()
 	_ -> bind(replLine, 'focus')()
 }
 
 runRepl := () => (
 	State.replLines := []
-	evalOutput := getEvalOutput(State.file)
+	evaluateInk(State.file)
 	render()
+	scrollToReplEnd()
 )
+
+scrollToReplEnd := () => inputLine := bind(document, 'querySelector')('.replInputLine') :: {
+	() -> ()
+	_ -> bind(inputLine, 'scrollIntoView')()
+}
 
 persistFileImmediately := () => setItem('State.file', State.file)
 persistFile := delay(persistFileImmediately, 800)
@@ -242,6 +279,7 @@ render := () => update(h('div', ['app'], [
 		Editor()
 		Repl()
 	])
+	Credits()
 ]))
 
 render()
