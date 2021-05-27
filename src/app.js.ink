@@ -292,7 +292,9 @@ Repl := () => hae(
 											text: State.line
 										}
 										evaluateInk(State.line)
-										render(State.line := '')
+										State.line := ''
+										State.commandIndex := ~1
+										render()
 										scrollToReplEnd()
 									)
 								}
@@ -301,6 +303,50 @@ Repl := () => hae(
 						'l' -> evt.ctrlKey | evt.altKey :: {
 							true -> render(State.replLines := [])
 						}
+						'ArrowUp' -> (
+							bind(evt, 'preventDefault')()
+							historicalCommands := map(reverse(filter(
+								State.replLines
+								line => line.type = Line.Prog
+							)), line => line.text)
+							selectedCmd := historicalCommands.(State.commandIndex + 1) :: {
+								() -> ()
+								_ -> (
+									State.line := selectedCmd
+									State.commandIndex := State.commandIndex + 1
+									render()
+
+									inputLine := bind(document, 'querySelector')('.replInputLine')
+									log(selectedCmd)
+									bind(inputLine, 'setSelectionRange')(len(selectedCmd), len(selectedCmd))
+								)
+							}
+						)
+						'ArrowDown' -> (
+							bind(evt, 'preventDefault')()
+							historicalCommands := map(reverse(filter(
+								State.replLines
+								line => line.type = Line.Prog
+							)), line => line.text)
+							State.commandIndex :: {
+								~1 -> ()
+								_ -> (
+									selectedCmd := historicalCommands.(State.commandIndex - 1)
+
+									State.line := selectedCmd
+									State.commandIndex := State.commandIndex - 1
+									render()
+
+									selectedCmd :: {
+										() -> ()
+										_ -> (
+											inputLine := bind(document, 'querySelector')('.replInputLine')
+											bind(inputLine, 'setSelectionRange')(len(selectedCmd), len(selectedCmd))
+										)
+									}
+								)
+							}
+						)
 					}
 				}
 				[]
@@ -352,6 +398,10 @@ State := {
 	replLines: []
 	` currently selected example name `
 	exampleName: ''
+	` used to navigate repl comomand history with arrow keys. The index is the
+	index into the reverse-chronological list of commands entered in this
+	session. ~1 indicates no history entry selected (default). `
+	commandIndex: ~1
 
 	theme: 'light'
 	page: Page.Home
@@ -368,6 +418,7 @@ focusReplLine := () => replLine := bind(document, 'querySelector')('.replInputLi
 
 runRepl := () => (
 	State.replLines := []
+	State.commandIndex := ~1
 	evaluateInk(State.file)
 	render()
 	scrollToReplEnd()
