@@ -165,7 +165,18 @@ Header := () => h('header', [], [
 				append([defaultOption], options)
 			)
 		)
-		Link('docs', 'https://dotink.co')
+		hae(
+			'select'
+			['colorSchemeSelect']
+			{}
+			{
+				'change': evt => render(State.theme := evt.target.value)
+			}
+			map(['light', 'dark'], theme => ha('option', [], {
+				value: theme
+				selected: State.theme = theme
+			}, [theme]))
+		)
 	])
 ])
 
@@ -308,14 +319,18 @@ Credits := () => h('div', ['credits'], [
 ])
 
 AboutPage := () => h('div', ['aboutPage'], [
-	h('h1', [], ['About Ink playground'])
-	h('p', [], [
-		` TODO:
-		- which stdlib is available
-		- the fact that this uses eval() currently so is unstable
-		- why it uses September and why it's cool
-		- where to find more documentation on Maverick `
-		'some explanation'
+	h('div', ['aboutContent'], [
+		h('h1', [], ['About the playground'])
+		h('p', [], [
+			` TODO:
+			- which stdlib is available
+			- the fact that this uses eval() currently so is unstable
+			- why it uses September and why it's cool
+			- where to find more documentation on Maverick `
+			'The Ink playground is a web based IDE and REPL for the '
+			Link('Ink', 'https://dotink.co/')
+			' programming language.'
+		])
 	])
 ])
 
@@ -367,7 +382,7 @@ persistFileImmediately := () => setItem('State.file', State.file)
 persistFile := delay(persistFileImmediately, 800)
 
 ` main render loop `
-render := () => update(h('div', ['app'], [
+render := () => update(h('div', ['app', State.theme], [
 	Embedded? :: {
 		true -> ()
 		_ -> Header()

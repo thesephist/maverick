@@ -25,7 +25,7 @@ body {
 	--error: #da1111;
 }
 
-body.dark {
+.dark {
     --primary-bg: #2f3437;
     --primary-text: #ebebeb;
     --secondary-bg: #373c3f;
@@ -63,6 +63,7 @@ textarea {
     width: 100%;
     height: 100vh;
 	overflow: hidden;
+	background: var(--primary-bg);
 }
 
 header {
@@ -103,12 +104,13 @@ nav a {
     text-decoration: none;
 }
 
-.exampleSelect {
+header select {
 	font-family: var(--sans);
 	margin: 0 8px;
 	cursor: pointer;
 	background: var(--primary-bg);
 	border-radius: 4px;
+	padding: 2px 6px;
 }
 
 .workspace {
@@ -259,6 +261,21 @@ textarea.replInputLine::placeholder {
 .credits,
 .credits a {
 	color: var(--secondary-text);
+}
+
+.aboutPage {
+	background: var(--primary-bg);
+}
+
+.aboutContent {
+	width: calc(100% - 36em);
+	max-width: 68ch;
+	margin: 0 18px;
+}
+
+.aboutContent p,
+.aboutContent li {
+	line-height: 1.5em;
 }
 
 @media only screen and (max-width: 700px) {
