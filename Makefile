@@ -29,6 +29,7 @@ build:
 		> static/ink/vendor.js
 	september translate \
 		lib/torus.js.ink \
+		src/examples.js.ink \
 		src/app.js.ink \
 		| tee /dev/stderr > static/ink/common.js
 	cat \

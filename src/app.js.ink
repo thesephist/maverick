@@ -37,6 +37,13 @@ delay := (fn, timeout) => (
 documentational reference to the source file. `
 translateInkToJS := load('september/ink/translate').main
 
+reportError := jsErr => (
+	State.replLines.len(State.replLines) := {
+		type: Line.Error
+		text: jsErr.message + Newline + jsErr.stack
+	}
+)
+
 ` takes a program and synchronously returns the evaluation result as a string `
 evaluateInk := prog => (
 	compiled := translateInkToJS(prog)
@@ -53,8 +60,13 @@ evaluateInk := prog => (
 			)
 			log := s => out(string(s) + Newline)
 
+			` TODO: explain this error "handling" black magic `
+			jsProgram := format('try { {{ 0 }} } catch (e) { reportError(e); null }', [
+				compiled
+			])
+
 			` eval() only works with proper strings `
-			replOutput := string(eval(str(compiled)))
+			replOutput := string(eval(str(jsProgram)))
 			State.replLines.len(State.replLines) := {
 				type: Line.Result
 				text: replOutput
@@ -82,17 +94,44 @@ RunButton := () => hae('button', ['runButton'], {title: 'Run code (Ctrl + Enter)
 Header := () => h('header', [], [
 	h('nav', ['left-nav'], [
 		ha('a', [], {href: '/'}, [
-			h('strong', [], ['Ink playground'])
+			h('strong', [], ['Ink', h('span', ['desktop'], [' playground'])])
 		])
+		Link('about', 'https://github.com/thesephist/maverick')
 	])
 	h('nav', ['right-nav'], [
-		Link('Ink docs', 'https://dotink.co')
-		Link('GitHub', 'https://github.com/thesephist/maverick')
+		hae(
+			'select'
+			['exampleSelect']
+			{}
+			{
+				'change': evt => evt.target.value :: {
+					'' -> render(State.exampleName := evt.target.value)
+					_ -> (
+						exName := evt.target.value
+						State.file := Examples.(exName)
+						State.exampleName := exName
+						render()
+					)
+				}
+			}
+			(
+				defaultOption := ha('option', [], {
+					value: ''
+					selected: State.exampleName = ''
+				}, ['-- examples --'])
+				options := map(sort!(keys(Examples)), k => ha('option', [], {
+					value: k
+					selected: State.exampleName = k
+				}, [k]))
+				append([defaultOption], options)
+			)
+		)
+		Link('docs', 'https://dotink.co')
 	])
 ])
 
 Editor := (
-	` CodeMirror to TextArea plumbing `
+	` CodeMirror <-> Maverick UI interface `
 
 	editorContainer := bind(document, 'createElement')('div')
 	editorContainer.className := 'editorContainer'
@@ -238,12 +277,13 @@ update := r.update
 State := {
 	` editor content `
 	file: restored := getItem('State.file') :: {
-		() -> 'log(\'Hello, World!\')'
+		() -> Examples.Hello
 		_ -> restored
 	}
 	line: ''
 	replLines: []
 	theme: 'light'
+	exampleName: ''
 }
 
 ` state fns `
