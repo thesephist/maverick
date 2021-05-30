@@ -80,23 +80,24 @@ Repl = () => hae(__Ink_String(`div`), [__Ink_String(`repl`)], {}, {click: () => 
 Nbsp = char(160);
 Credits = () => h(__Ink_String(`div`), [__Ink_String(`credits`)], [__Ink_String(`Ink playground is a project by `), Link(__Ink_String(`Linus`), __Ink_String(`https://thesephist.com/`)), __Ink_String(` built with `), Link(__Ink_String(`Ink`), __Ink_String(`https://dotink.co/`)), __as_ink_string(__as_ink_string(Nbsp + __Ink_String(`&`)) + Nbsp), Link(__Ink_String(`September`), __Ink_String(`https://github.com/thesephist/september`))]);
 AboutPage = () => h(__Ink_String(`div`), [__Ink_String(`aboutPage`)], [h(__Ink_String(`div`), [__Ink_String(`aboutContent`)], [hae(__Ink_String(`button`), [__Ink_String(`aboutBackButton`)], {}, {click: () => render((() => {let __ink_assgn_trgt = __as_ink_string(State); __is_ink_string(__ink_assgn_trgt) ? __ink_assgn_trgt.assign(page, (() => {let __ink_acc_trgt = __as_ink_string(Page); return __is_ink_string(__ink_acc_trgt) ? __ink_acc_trgt.valueOf()[Home] || null : (__ink_acc_trgt.Home !== undefined ? __ink_acc_trgt.Home : null)})()) : (__ink_assgn_trgt.page) = (() => {let __ink_acc_trgt = __as_ink_string(Page); return __is_ink_string(__ink_acc_trgt) ? __ink_acc_trgt.valueOf()[Home] || null : (__ink_acc_trgt.Home !== undefined ? __ink_acc_trgt.Home : null)})(); return __ink_assgn_trgt})())}, [__Ink_String(`← back`)]), h(__Ink_String(`h1`), [], [__Ink_String(`About Ink playground`)]), h(__Ink_String(`p`), [], [__Ink_String(`The Ink playground is a web based IDE and REPL for the `), Link(__Ink_String(`Ink`), __Ink_String(`https://dotink.co/`)), __Ink_String(` programming language. It lets you write and run Ink programs
-			privately in the browser, and lets you use an Ink REPL in the same
-			context. Ink programs in the playground run completely inside your
-			browser, and are not sent to a centralized server.`)]), h(__Ink_String(`p`), [], [__Ink_String(`The playground uses `), Link(__Ink_String(`September`), __Ink_String(`https://github.com/thesephist/september`)), __Ink_String(`, a compiler that compiles Ink to JavaScript, to compile Ink
-			programs to JavaScript code for the browser. The compiler itself is
-			compiled to JavaScript using itself, and runs in the browser when
-			you hit Run.`)]), h(__Ink_String(`p`), [], [__Ink_String(`Once an Ink program is compiled to JavaScript, the playground
+			privately in the browser. Ink programs in the playground run
+			completely within your browser, and are not sent to a centralized
+			server.`)]), h(__Ink_String(`p`), [], [__Ink_String(`The playground uses `), Link(__Ink_String(`September`), __Ink_String(`https://github.com/thesephist/september`)), __Ink_String(`, a compiler that compiles Ink to JavaScript, to compile Ink
+			programs to JavaScript code for your browser to execute. The
+			September compiler is also compiled to JavaScript using itself to
+			be included in this app, and runs in the browser when you hit Run.`)]), h(__Ink_String(`p`), [], [__Ink_String(`Once an Ink program is compiled to JavaScript, the playground
 			currently uses JavaScript's `), h(__Ink_String(`code`), [], [__Ink_String(`eval()`)]), __Ink_String(` function to execute code in the REPL. This means that a single
-			browser session is one long REPL session in the playground --
-			global variables are not cleared on every program run. there are
-			rare edge cases where the compiler will crash on an invalid Ink
-			program, or the compiled Ink program will error in a way that's
-			unrecoverable. But because the playground is a static site, if
-			anything seems off, you can simply reload the page and start a new
-			sesion.`)]), h(__Ink_String(`h2`), [], [__Ink_String(`Standard library and builtins`)]), h(__Ink_String(`p`), [], [__Ink_String(`In the playground, the standard libraries `), h(__Ink_String(`code`), [], [__Ink_String(`std`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`str`)]), __Ink_String(`, and `), h(__Ink_String(`code`), [], [__Ink_String(`quicksort`)]), __Ink_String(` are available in the global scope. This means you can, for
+			browser session is one long REPL session — global variables are
+			not cleared on every program run. There are rare edge cases where
+			the compiler will crash on an invalid Ink program, or the compiled
+			Ink program will error in a way that's unrecoverable. But because
+			the playground is a static site, if anything seems off, you can
+			simply reload the page and start fresh. Your Ink program in the
+			editor will auto-save every few seconds.`)]), h(__Ink_String(`h2`), [], [__Ink_String(`Standard library and builtins`)]), h(__Ink_String(`p`), [], [__Ink_String(`In the playground, the standard libraries `), h(__Ink_String(`code`), [], [__Ink_String(`std`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`str`)]), __Ink_String(`, and `), h(__Ink_String(`code`), [], [__Ink_String(`quicksort`)]), __Ink_String(` are available from the global scope. This means you can, for
 			example, call `), h(__Ink_String(`code`), [], [__Ink_String(`sort!(map([1, 2, 3], n => n * n))`)]), __Ink_String(` without loading any libraries in your program. Many built-in
-			functions like `), h(__Ink_String(`code`), [], [__Ink_String(`time`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`rand`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`wait`)]), __Ink_String(`, and most math functions are also supported.`)]), h(__Ink_String(`h2`), [], [__Ink_String(`More about this project`)]), h(__Ink_String(`p`), [], [__Ink_String(`This Ink playground is built using Ink and standard libraries from
-			version v0.1.9, and also uses `), Link(__Ink_String(`Torus`), __Ink_String(`https://github.com/thesephist/torus`)), __Ink_String(` for the user interface. The source code for this project is
+			functions like `), h(__Ink_String(`code`), [], [__Ink_String(`time`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`rand`)]), __Ink_String(`, `), h(__Ink_String(`code`), [], [__Ink_String(`wait`)]), __Ink_String(`, and most math functions are also supported.`)]), h(__Ink_String(`h2`), [], [__Ink_String(`More about this project`)]), h(__Ink_String(`p`), [], [__Ink_String(`The Ink playground is built using Ink and standard libraries from
+			Ink version v0.1.9. The app is written entirely in Ink, but also
+			depends on `), Link(__Ink_String(`Torus`), __Ink_String(`https://github.com/thesephist/torus`)), __Ink_String(` to render the user interface. The source code for this project is
 			available on GitHub at `), Link(__Ink_String(`thesephist/maverick`), __Ink_String(`https://github.com/thesephist/maverick`)), __Ink_String(`.`)])])]);
 root = bind(document, __Ink_String(`querySelector`))(__Ink_String(`#root`));
 r = Renderer(root);

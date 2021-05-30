@@ -375,30 +375,30 @@ AboutPage := () => h('div', ['aboutPage'], [
 			'The Ink playground is a web based IDE and REPL for the '
 			Link('Ink', 'https://dotink.co/')
 			' programming language. It lets you write and run Ink programs
-			privately in the browser, and lets you use an Ink REPL in the same
-			context. Ink programs in the playground run completely inside your
-			browser, and are not sent to a centralized server.'
+			privately in the browser. Ink programs in the playground run
+			completely within your browser, and are not sent to a centralized
+			server.'
 		])
 		h('p', [], [
 			'The playground uses '
 			Link('September', 'https://github.com/thesephist/september')
 			', a compiler that compiles Ink to JavaScript, to compile Ink
-			programs to JavaScript code for the browser. The compiler itself is
-			compiled to JavaScript using itself, and runs in the browser when
-			you hit Run.'
+			programs to JavaScript code for your browser to execute. The
+			September compiler is also compiled to JavaScript using itself to
+			be included in this app, and runs in the browser when you hit Run.'
 		])
 		h('p', [], [
 			'Once an Ink program is compiled to JavaScript, the playground
 			currently uses JavaScript\'s '
 			h('code', [], ['eval()'])
 			' function to execute code in the REPL. This means that a single
-			browser session is one long REPL session in the playground --
-			global variables are not cleared on every program run. there are
-			rare edge cases where the compiler will crash on an invalid Ink
-			program, or the compiled Ink program will error in a way that\'s
-			unrecoverable. But because the playground is a static site, if
-			anything seems off, you can simply reload the page and start a new
-			sesion.'
+			browser session is one long REPL session — global variables are
+			not cleared on every program run. There are rare edge cases where
+			the compiler will crash on an invalid Ink program, or the compiled
+			Ink program will error in a way that\'s unrecoverable. But because
+			the playground is a static site, if anything seems off, you can
+			simply reload the page and start fresh. Your Ink program in the
+			editor will auto-save every few seconds.'
 		])
 		h('h2', [], ['Standard library and builtins'])
 		h('p', [], [
@@ -408,7 +408,7 @@ AboutPage := () => h('div', ['aboutPage'], [
 			h('code', [], ['str'])
 			', and '
 			h('code', [], ['quicksort'])
-			' are available in the global scope. This means you can, for
+			' are available from the global scope. This means you can, for
 			example, call '
 			h('code', [], ['sort!(map([1, 2, 3], n => n * n))'])
 			' without loading any libraries in your program. Many built-in
@@ -422,10 +422,11 @@ AboutPage := () => h('div', ['aboutPage'], [
 		])
 		h('h2', [], ['More about this project'])
 		h('p', [], [
-			'This Ink playground is built using Ink and standard libraries from
-			version v0.1.9, and also uses '
+			'The Ink playground is built using Ink and standard libraries from
+			Ink version v0.1.9. The app is written entirely in Ink, but also
+			depends on '
 			Link('Torus', 'https://github.com/thesephist/torus')
-			' for the user interface. The source code for this project is
+			' to render the user interface. The source code for this project is
 			available on GitHub at '
 			Link('thesephist/maverick', 'https://github.com/thesephist/maverick')
 			'.'
