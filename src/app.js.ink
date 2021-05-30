@@ -355,30 +355,80 @@ Repl := () => hae(
 	]
 )
 
+Nbsp := char(160)
 Credits := () => h('div', ['credits'], [
 	'Ink playground is a project by '
 	Link('Linus', 'https://thesephist.com/')
 	' built with '
 	Link('Ink', 'https://dotink.co/')
-	' and '
+	Nbsp + '&' + Nbsp
 	Link('September', 'https://github.com/thesephist/september')
 ])
 
 AboutPage := () => h('div', ['aboutPage'], [
 	h('div', ['aboutContent'], [
-		h('h1', [], ['About the playground'])
+		hae('button', ['aboutBackButton'], {}, {
+			click: () => render(State.page := Page.Home)
+		}, ['← back'])
+		h('h1', [], ['About Ink playground'])
 		h('p', [], [
-			` TODO:
-			- which stdlib is available
-			- the fact that this uses eval() currently so is unstable
-				- e.g. local variables are not cleared when repl is cleared; a
-				  single browser session is a single long REPL session, and the
-				  session is self-mutable.
-			- why it uses September and why it's cool
-			- where to find more documentation on Maverick `
 			'The Ink playground is a web based IDE and REPL for the '
 			Link('Ink', 'https://dotink.co/')
-			' programming language.'
+			' programming language. It lets you write and run Ink programs
+			privately in the browser, and lets you use an Ink REPL in the same
+			context. Ink programs in the playground run completely inside your
+			browser, and are not sent to a centralized server.'
+		])
+		h('p', [], [
+			'The playground uses '
+			Link('September', 'https://github.com/thesephist/september')
+			', a compiler that compiles Ink to JavaScript, to compile Ink
+			programs to JavaScript code for the browser. The compiler itself is
+			compiled to JavaScript using itself, and runs in the browser when
+			you hit Run.'
+		])
+		h('p', [], [
+			'Once an Ink program is compiled to JavaScript, the playground
+			currently uses JavaScript\'s '
+			h('code', [], ['eval()'])
+			' function to execute code in the REPL. This means that a single
+			browser session is one long REPL session in the playground --
+			global variables are not cleared on every program run. there are
+			rare edge cases where the compiler will crash on an invalid Ink
+			program, or the compiled Ink program will error in a way that\'s
+			unrecoverable. But because the playground is a static site, if
+			anything seems off, you can simply reload the page and start a new
+			sesion.'
+		])
+		h('h2', [], ['Standard library and builtins'])
+		h('p', [], [
+			'In the playground, the standard libraries '
+			h('code', [], ['std'])
+			', '
+			h('code', [], ['str'])
+			', and '
+			h('code', [], ['quicksort'])
+			' are available in the global scope. This means you can, for
+			example, call '
+			h('code', [], ['sort!(map([1, 2, 3], n => n * n))'])
+			' without loading any libraries in your program. Many built-in
+			functions like '
+			h('code', [], ['time'])
+			', '
+			h('code', [], ['rand'])
+			', '
+			h('code', [], ['wait'])
+			', and most math functions are also supported.'
+		])
+		h('h2', [], ['More about this project'])
+		h('p', [], [
+			'This Ink playground is built using Ink and standard libraries from
+			version v0.1.9, and also uses '
+			Link('Torus', 'https://github.com/thesephist/torus')
+			' for the user interface. The source code for this project is
+			available on GitHub at '
+			Link('thesephist/maverick', 'https://github.com/thesephist/maverick')
+			'.'
 		])
 	])
 ])
