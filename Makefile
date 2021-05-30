@@ -1,4 +1,4 @@
-all: build
+all: build-all
 
 # build dependencies
 build-libs:
@@ -56,4 +56,3 @@ t: check
 fmt:
 	inkfmt fix lib/*.ink src/*.ink test/*.ink
 f: fmt
-
