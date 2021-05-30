@@ -4,7 +4,6 @@ body {
 }
 
 body {
-    color: var(--primary-text);
     background: var(--primary-bg);
     font-family: var(--sans);
 
@@ -21,8 +20,8 @@ body {
     --translucent: rgba(249, 250, 251, .8);
     --transparent: rgba(249, 250, 251, 0);
 
-	/* repl text colors */
-	--error: #da1111;
+    /* repl text colors */
+    --error: #da1111;
 }
 
 .dark {
@@ -35,7 +34,7 @@ body {
     --translucent: rgba(47, 52, 55, .8);
     --transparent: rgba(47, 52, 55, 0);
 
-	--error: #ff554c;
+    --error: #ff554c;
 }
 
 a {
@@ -62,8 +61,9 @@ textarea {
     flex-direction: column;
     width: 100%;
     height: 100vh;
-	overflow: hidden;
-	background: var(--primary-bg);
+    overflow: hidden;
+    color: var(--primary-text);
+    background: var(--primary-bg);
 }
 
 header {
@@ -105,12 +105,12 @@ nav a {
 }
 
 header select {
-	font-family: var(--sans);
-	margin: 0 8px;
-	cursor: pointer;
-	background: var(--primary-bg);
-	border-radius: 4px;
-	padding: 2px 6px;
+    font-family: var(--sans);
+    margin: 0 8px;
+    cursor: pointer;
+    background: var(--primary-bg);
+    border-radius: 4px;
+    padding: 2px 6px;
 }
 
 .workspace {
@@ -119,8 +119,8 @@ header select {
     flex-grow: 1;
     flex-shrink: 1;
     justify-content: space-between;
-	height: 0;
-	width: 100%;
+    height: 0;
+    width: 100%;
 }
 
 .editor,
@@ -177,7 +177,7 @@ header select {
     display: block;
     box-sizing: border-box;
     padding: 0 8px;
-	word-break: break-all;
+    word-break: break-all;
 }
 
 .repl .prog-line {
@@ -195,7 +195,7 @@ header select {
 }
 
 .repl .error-line {
-	color: var(--error);
+    color: var(--error);
     font-style: italic;
 }
 
@@ -205,8 +205,8 @@ header select {
     font-family: var(--mono);
     background: var(--hover-bg);
     padding: 0 8px;
-	/* to not overlap with credits, ergonomics */
-	margin-bottom: 6em;
+    /* to not overlap with credits, ergonomics */
+    margin-bottom: 6em;
 }
 
 .inputPrompt {
@@ -215,9 +215,9 @@ header select {
 }
 
 .addToEditorButton {
-	display: none;
-	float: right;
-	background: transparent;
+    display: none;
+    float: right;
+    background: transparent;
     border: 0;
     color: var(--secondary-text);
     font-family: var(--mono);
@@ -225,7 +225,7 @@ header select {
 }
 
 .replLine:hover .addToEditorButton {
-	display: inline;
+    display: inline;
 }
 
 .addToEditorButton:hover {
@@ -252,59 +252,59 @@ textarea.replInputLine::placeholder {
 }
 
 .credits {
-	position: fixed;
-	right: 6px;
-	bottom: 6px;
-	font-size: 12px;
-	text-align: right;
+    position: fixed;
+    right: 6px;
+    bottom: 6px;
+    font-size: 12px;
+    text-align: right;
 }
 
 .credits,
 .credits a {
-	color: var(--secondary-text);
+    color: var(--secondary-text);
 }
 
 .aboutBackButton {
-	background: transparent;
-	border: 0;
-	cursor: pointer;
-	padding: 0;
-	margin: 0;
-	color: var(--secondary-text);
-	margin-top: 1em;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    color: var(--secondary-text);
+    margin-top: 1em;
 }
 
 .aboutBackButton:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .aboutPage {
-	background: var(--primary-bg);
-	overflow-y: auto;
+    background: var(--primary-bg);
+    overflow-y: auto;
 }
 
 .aboutContent {
-	width: calc(100% - 36px);
-	max-width: 68ch;
-	margin: 0 18px;
-	margin-bottom: 6em;
+    width: calc(100% - 36px);
+    max-width: 68ch;
+    margin: 0 18px;
+    margin-bottom: 6em;
 }
 
 .aboutContent p,
 .aboutContent li {
-	line-height: 1.5em;
+    line-height: 1.5em;
 }
 
 .aboutContent code {
-	background: var(--hover-bg);
+    background: var(--hover-bg);
     border-radius: 3px;
     padding: 1px 4px 2px 4px;
 }
 
 @media only screen and (max-width: 700px) {
-	.desktop {
-		display: none;
-	}
+    .desktop {
+        display: none;
+    }
     .workspace {
         flex-direction: column;
     }
