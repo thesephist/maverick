@@ -2,7 +2,7 @@
 
 **Maverick** is a simple web IDE and REPL for the [Ink programming language](https://dotink.co/), written in pure Ink and built on a self-hosted [September](https://github.com/thesephist/september) compiler toolchain that runs entirely in the browser. It compiles Ink code to JavaScript to run it locally without requiring a backend or a native execution environment, which is possible because the September compiler is used to compile the compiler itself to JavaScript bundled in the web app.
 
-You can try the demo at **[maverick.vercel.app](https://maverick.vercel.app)** by running some included example programs.
+You can try the demo at **[play.dotink.co](https://play.dotink.co)** by running some included example programs.
 
 ![Screenshot of Ink playground running a prime sieve program](static/img/maverick.png)
 
