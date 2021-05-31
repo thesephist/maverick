@@ -301,6 +301,21 @@ textarea.replInputLine::placeholder {
     padding: 1px 4px 2px 4px;
 }
 
+/* embedded mode, /?=embed=1 for <iframe> use */
+
+.embedded .workspace {
+    flex-direction: column;
+}
+.embedded .editor,
+.embedded .repl {
+    height: 0;
+    width: 100%;
+}
+.embedded .editor + .repl {
+    border-top: 2px solid var(--active-bg);
+    border-left: 0;
+}
+
 @media only screen and (max-width: 700px) {
     .desktop {
         display: none;
@@ -318,4 +333,3 @@ textarea.replInputLine::placeholder {
         border-left: 0;
     }
 }
-

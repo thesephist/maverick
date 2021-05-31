@@ -15,7 +15,14 @@ Page := {
 	About: 'about'
 }
 
-Embedded? := ~(window.frameElement = ())
+Embedded? := (
+	searchParams := jsnew(URLSearchParams, [location.search])
+	bind(searchParams, 'get')('embed') :: {
+		() -> false
+		'' -> false
+		_ -> true
+	}
+)
 
 ` utility fns `
 
@@ -111,13 +118,15 @@ RunButton := () => hae('button', ['runButton'], {title: 'Run code (Ctrl + Enter)
 Header := () => h('header', [], [
 	h('nav', ['left-nav'], [
 		hae(
-			'a', [], {href: '/'}
+			'a', [], {href: '/', target: '_blank'}
 			{
-				click: evt => (
-					bind(evt, 'preventDefault')()
-					render(State.page := Page.Home)
-					focusReplLine()
-				)
+				click: evt => Embedded? :: {
+					false -> (
+						bind(evt, 'preventDefault')()
+						render(State.page := Page.Home)
+						focusReplLine()
+					)
+				}
 			}
 			[
 				h('strong', [], ['Ink', h('span', ['desktop'], [' playground'])])
@@ -138,33 +147,35 @@ Header := () => h('header', [], [
 		)
 	])
 	h('nav', ['right-nav'], [
-		hae(
-			'select'
-			['exampleSelect']
-			{}
-			{
-				'change': evt => evt.target.value :: {
-					'' -> render(State.exampleName := evt.target.value)
-					_ -> (
-						exName := evt.target.value
-						State.file := Examples.(exName)
-						State.exampleName := exName
-						render()
-					)
+		Embedded? :: {
+			false -> hae(
+				'select'
+				['exampleSelect']
+				{}
+				{
+					'change': evt => evt.target.value :: {
+						'' -> render(State.exampleName := evt.target.value)
+						_ -> (
+							exName := evt.target.value
+							State.file := Examples.(exName)
+							State.exampleName := exName
+							render()
+						)
+					}
 				}
-			}
-			(
-				defaultOption := ha('option', [], {
-					value: ''
-					selected: State.exampleName = ''
-				}, ['-- examples --'])
-				options := map(sort!(keys(Examples)), k => ha('option', [], {
-					value: k
-					selected: State.exampleName = k
-				}, [k]))
-				append([defaultOption], options)
+				(
+					defaultOption := ha('option', [], {
+						value: ''
+						selected: State.exampleName = ''
+					}, ['-- examples --'])
+					options := map(sort!(keys(Examples)), k => ha('option', [], {
+						value: k
+						selected: State.exampleName = k
+					}, [k]))
+					append([defaultOption], options)
+				)
 			)
-		)
+		}
 		hae(
 			'select'
 			['colorSchemeSelect']
@@ -497,20 +508,30 @@ persistFileImmediately := () => setItem('State.file', State.file)
 persistFile := delay(persistFileImmediately, 800)
 
 ` main render loop `
-render := () => update(h('div', ['app', State.theme], [
-	Embedded? :: {
-		true -> ()
-		_ -> Header()
-	}
-	State.page :: {
-		Page.Home -> h('div', ['workspace'], [
-			Editor()
-			Repl()
-		])
-		Page.About -> AboutPage()
-	}
-	Credits()
-]))
+render := () => update(h(
+	'div'
+	[
+		'app'
+		State.theme
+		Embedded? :: {
+			true -> 'embedded'
+			_ -> ''
+		}
+	]
+	[
+		Header()
+		State.page :: {
+			Page.Home -> h('div', ['workspace'], [
+				Editor()
+				Repl()
+			])
+			Page.About -> AboutPage()
+		}
+		Embedded? :: {
+			false -> Credits()
+		}
+	]
+))
 
 render()
 
