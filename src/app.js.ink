@@ -499,9 +499,9 @@ runRepl := () => (
 	scrollToReplEnd()
 )
 
-scrollToReplEnd := () => inputLine := bind(document, 'querySelector')('.replInputLine') :: {
+scrollToReplEnd := () => repl := bind(document, 'querySelector')('.repl') :: {
 	() -> ()
-	_ -> bind(inputLine, 'scrollIntoView')()
+	_ -> repl.scrollTop := repl.scrollHeight
 }
 
 persistFileImmediately := () => setItem('State.file', State.file)

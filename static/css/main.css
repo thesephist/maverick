@@ -206,7 +206,12 @@ header select {
     background: var(--hover-bg);
     padding: 0 8px;
     /* to not overlap with credits, ergonomics */
-    margin-bottom: 6em;
+    margin-bottom: 3em;
+}
+
+.embedded .inputLine {
+    /* vertical real estate is at a premium in embedded mode */
+    margin-bottom: 0;
 }
 
 .inputPrompt {
